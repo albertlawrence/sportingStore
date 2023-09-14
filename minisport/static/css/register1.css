@@ -1,0 +1,80 @@
+*
+{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    background-image:url("../images/backgroundimg.jpg") ;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#Register_body
+{
+    margin-left: 500px;
+    margin-right: 500px;
+    margin-top: 150px;
+    border-radius: 5px;
+    background-color: rgba(0, 0, 0, 0.625);
+}
+#name,#Number,#Email,#Password,#Confirm_Password{
+    margin-left: 80px;
+    font-size: 15px;
+    padding: 8px;
+    border-radius: 5px;
+    width: 70%;
+}
+#submit
+{
+    margin-left: 80px;
+    font-size: 15px;
+    padding: 8px;
+    border-radius: 5px;
+    width: 70%;
+    cursor: pointer;
+    border: none;
+    background-color: rgb(29, 220, 29);
+    
+}
+#google
+{
+    margin-left: 80px;
+    font-size: 15px;
+    padding: 8px;
+    border-radius: 5px;
+    width: 70%;
+    cursor: pointer;
+    border: none;
+    background-color: white;
+}
+#submit:hover
+{
+    background-color: rgb(2, 161, 2);
+}
+a
+{
+    text-decoration: none;
+
+    color: white;
+
+    margin-left: 90px;
+}
+a:hover
+{
+    text-decoration: underline;
+
+    color: rgb(61, 138, 232);
+}
+#Forgot,#New_user{
+
+    text-decoration: none;
+
+    color: white;
+
+    margin-left: 8 0px;
+}
+#Forgot:hover,#New_user:hover{
+
+    text-decoration: underline;
+    
+    color: rgb(61, 138, 232);
+}

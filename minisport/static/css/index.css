@@ -1,0 +1,364 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+.head
+{
+    height: 700px;
+    background-image:url("../images/backgroundimg.jpg") ;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#main {
+    display: flex;
+    justify-content: space-between;
+    
+}
+#main1 {
+    color: white;
+    padding-left: 20px;
+    padding-top: 5px;
+}
+
+#main2 {
+    padding-right: 30px;
+    padding-top: 30px;
+    color: white;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+.field {
+    margin-left: 120px;
+    padding-left: 110px;
+    padding-right: 110px;
+    font-size: 30px;
+    background-color: #ffc107;
+}
+
+.set {
+    margin-right: 100px;
+    margin-top: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    background-color: white;
+}
+
+.text {
+    background-color: #e1e1e1;
+    width: 500px;
+    height: 30px;
+    color: black;
+    font-size: 20px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    padding: 20px 20px 20px 20px;
+}
+.text2 {
+    background-color: #e1e1e1;
+    width: 250px;
+    height: 30px;
+    color: black;
+    font-size: 20px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    padding: 20px 20px 20px 20px;
+}
+
+#parra {
+    font-size: 30px;
+    color: white;
+}
+
+.button {
+    padding: 15px 35px;
+    border-radius: 10px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    margin-left: 350px;
+}
+
+.button:hover {
+    background-color: #ffc107;
+    color: black;
+}
+
+#car {
+    padding-left: 70px;
+    padding-top: 60px;
+    height: 300px;
+    width: 500px;
+}
+
+.taxi {
+    display: flex;
+    justify-content: space-between;
+}
+
+#taxi1 {
+    padding-left: 100px;
+}
+
+#taxi3 {
+    padding-right: 100px;
+}
+
+#taxi {
+    background-color: black;
+}
+
+h1,
+h2 {
+    color: black;
+}
+
+#carset {
+    background-color: white;
+    width: 320px;
+}
+#btn{
+    font-size: 15px;
+    padding: 5px;
+    background-color: rgb(21, 214, 21);
+    width: 150px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#btn_show{
+    font-size: 20aboutpx;
+    padding: 15px;
+    background-color: rgb(21, 214, 21);
+    width: 150px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+#h2 {
+    color: white;
+    font-size: 50px;
+}
+
+#h1 {
+    color: white;
+}
+
+#parra2 {
+    font-size: 20px;
+   
+}
+
+#mytaxi1 {
+    display: flex;
+}
+
+#mytaxi2 {
+    display: flex;
+}
+
+#mytaxi3 {
+    display: flex;
+}
+
+#mytaxi4 {
+    display: flex;
+}
+
+#ride {
+    font-size: 40px;
+}
+
+strong {
+    color: #ffc107;
+}
+
+hr {
+    margin-left: 300px;
+    margin-right: 300px;
+}
+
+.p1 {
+    padding-left: 50px;
+}
+
+.book {
+    height: 50px;
+    width: 100px;
+    margin-left: 70px;
+    background-color: #ffc107;
+    color: white;
+    cursor: pointer;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+}
+
+.book:hover {
+    background-color: black;
+}
+
+.p2 {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.ph1 {
+    padding-left: 30px;
+}
+
+.ph2 {
+    padding-right: 40px;
+}
+
+.end {
+    display: flex;
+    justify-content: space-between;
+}
+
+#end_section {
+    color: white;
+}
+
+#end {
+    background-color: black;
+}
+
+.end1 {
+    margin-right: 200px;
+    padding-left: 30px;
+
+}
+
+.end2 {
+    margin-right: 100px;
+    margin-left: 20px;
+
+}
+
+.end3 {
+    margin-right: 200px;
+
+}
+
+.end4 {
+    padding-right: 40px;
+    padding-top: 40px;
+}
+
+.ending {
+    font-size: 25px;
+}
+
+.end_text {
+    height: 40px;
+    width: 250px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    padding: 15px 15px 15px 15px;
+}
+
+.end_button {
+    height: 40px;
+    width: 100px;
+    border-top: 0px;
+    border-bottom: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    background-color: #ffc107;
+    cursor: pointer;
+    color: white;
+}
+
+.end_button:hover {
+    background-color: white;
+    color: #ffc107;
+}
+#car_cursor
+{
+    cursor: grab;
+}
+#contact
+{
+    display: flex;
+    justify-content: space-between;
+    background-color: yellow;
+}
+.app
+{
+    margin-top: 50px;
+    margin-left: 150px;
+}
+#app
+{
+    height: 100px;
+    width: 250px;
+}
+.phone
+{
+    margin-top: 100px;
+    margin-right: 150px;
+    margin-bottom: 50px;
+}
+#phone
+{
+    height: 400px;
+}
+#flip
+{
+  background-color: black;
+  color: white;
+  height: 20px;
+  width: 133px;  
+  font-size: 16px; 
+  border-bottom: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+  padding: 5px, 5px, 5px, 5px;
+}
+#flip:hover
+{
+    color: red;
+}
+#slide
+{
+    margin-left: 500px;
+
+}
+.option
+{
+    height: 30px;
+    width: 100px;
+    color: red;
+    background-color: black;
+    font-size: 18px;
+    cursor: pointer;
+    border-bottom: none;
+    border-top: none;
+     border-left: none;
+     border-right: none;
+}
+.option:hover
+{
+    color: white;
+}

@@ -1,0 +1,28 @@
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css\register.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <div class="Register_body">
+        <fieldset id="Register_body"><br><br>
+            <p style="text-align: center; color: rgb(210, 40, 14);">{% if error %}{{error}}{% endif %}</p><br><br>
+            <center><h1 style="color: white;">LOGIN</h1></center><br><br>
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="text" id="Name" name="username" placeholder="Enter Username"><br><br>
+            <input type="password" id="Password" name="password" placeholder="Enter Password"><br><br>
+            <input type="submit" value="Login" id="submit"><br><br>
+            <h3 style="color: white; margin-left: 210px;"> -----OR-----</h3><br>
+            <button type="submit" id="google"><img src="{% static 'images\google.jpg' %}" alt="" height="20px" width="20px">&emsp;Login With Google</button><br><br>
+            <a href="{% url 'register' %}" id="New_user">New user?</a><br><br>
+            <a href="{% url 'forgot_password' %}" id="Forgot">Forgot password?</a><br><br><br>
+            </form>
+            
+        </fieldset>
+    </div>
+</body>
+</html>

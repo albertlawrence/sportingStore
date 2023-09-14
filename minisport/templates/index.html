@@ -1,0 +1,143 @@
+{% load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css\index.css' %}">
+    <title>Sporting good store</title>
+</head>
+<body>
+    <div class="head">
+        <div id="main">
+            <div id="main1">
+                <h1 id="h1">Sporting Good Store</h1>
+            </div>
+            <div id="main2">
+                {% if user.is_authenticated %}
+                    <a href="" style="color: red;">Welcome, {{ user.username }}</a>&emsp;
+                    <a href="#main">HOME</a>&emsp;
+                    <a href="#about">ABOUT</a>&emsp;
+                    <a href="#taxi">PRODUCT</a>&emsp;
+                    <a href="#about">CART</a>&emsp;
+                    <a href="{% url 'logout' %}?next=/">Logout</a>&emsp;&emsp;&emsp;
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+            
+        </div><br><br><br>
+    </div><br><br>
+    
+    <div id="taxi"><br><br><br>
+        <center>
+            <h2 id="h2">Top Products</h2>
+        </center><br><br>
+        <div class="taxi">
+            <div id="taxi1">
+                <fieldset id="carset"><br><br>
+                        <center><img src="{% static 'images\criketbat.png'%}" alt="" height="200px" width="200px" ></center><br><br>
+                        <center><p id="parra2" style="text-align: center;">Criket Bat</p></center><br>
+                        <center><p id="parra2" style="text-align: center;">Rs:2000</p></center><br>
+                        <center><input type="button" value="Show" id="btn"></center><br><br>
+                </fieldset><br><br>
+            </div>
+            <div id="taxi2">
+                <fieldset id="carset"><br><br>
+                    <center><img src="{% static 'images\football.png'%}" alt="" height="200px" width="200px" ></center><br><br>
+                    <center><p id="parra2" style="text-align: center;">Footballt</p></center><br>
+                    <center><p id="parra2" style="text-align: center;">Rs:1700</p></center><br>
+                    <center><input type="button" value="Show" id="btn"></center><br><br>
+            </fieldset><br><br>
+            </div>
+            <div id="taxi3">
+                <fieldset id="carset"><br><br>
+                    <center><img src="{% static 'images\hockey.png'%}" alt="" height="200px" width="200px" ></center><br><br>
+                    <center><p id="parra2" style="text-align: center;">Criket Bat</p></center><br>
+                    <center><p id="parra2" style="text-align: center;">Rs:2000</p></center><br>
+                    <center><input type="button" value="Show" id="btn"></center><br><br>
+            </fieldset><br><br>
+            </div>
+        </div>
+        <div class="taxi">
+            <div id="taxi1">
+                <fieldset id="carset"><br><br>
+                        <center><img src="{% static 'images\tennis.png'%}" alt="" height="200px" width="200px" ></center><br><br>
+                        <center><p id="parra2" style="text-align: center;">Tennis Bat</p></center><br>
+                        <center><p id="parra2" style="text-align: center;">Rs:2000</p></center><br>
+                        <center><input type="button" value="Show" id="btn"></center><br><br>
+                </fieldset><br><br>
+            </div>
+            <div id="taxi2">
+                <fieldset id="carset"><br><br>
+                    <center><img src="{% static 'images\jercey.jpg'%}" alt="" height="200px" width="200px" ></center><br><br>
+                    <center><p id="parra2" style="text-align: center;">Footballt</p></center><br>
+                    <center><p id="parra2" style="text-align: center;">Rs:1700</p></center><br>
+                    <center><input type="button" value="Show" id="btn"></center><br><br>
+            </fieldset><br><br>
+            </div>
+            <div id="taxi3">
+                <fieldset id="carset"><br><br>
+                    <center><img src="{% static 'images\boot.jpg'%}" alt="" height="200px" width="200px" ></center><br><br>
+                    <center><p id="parra2" style="text-align: center;">Criket Bat</p></center><br>
+                    <center><p id="parra2" style="text-align: center;">Rs:2000</p></center><br>
+                    <center><input type="button" value="Show" id="btn"></center><br><br>
+            </fieldset><br><br>
+            </div>
+        </div>
+        <center><input type="button" value="show more" id="btn_show"></center><br><br>
+    </div><br><br>
+    
+    <div id="brand">
+       <center><h2>OUR BRAND</h2></center>
+       <marquee behavior="" direction="Rights">
+        <img src="{% static 'images\adidas.png'%}" alt="" height="200px" width="200px">
+        <img src="{% static 'images\armour.png'%}" alt="" height="200px" width="200px">
+        <img src="{% static 'images\asics.png'%}" alt="" height="200px" width="200px">
+        <img src="{% static 'images\nike.png'%}" alt="" height="200px" width="200px">
+        <img src="{% static 'images\puma.png'%}" alt="" height="200px" width="200px">
+        <img src="{% static 'images\lululemon.png'%}" alt="" height="200px" width="200px">
+       </marquee>
+    </div><br><br>
+    <div id="end"><br><br><br><br><br><br>
+        <div class="end">
+            <div class="end1">
+                <h1 id="end_section" class="ending">Adress</h1><br>
+                <p id="end_section">Sporting Good Store, Arpunkara po kottayam,kerala, India</p>
+            </div>
+            <div class="end2">
+                <h1 id="end_section" class="ending">Links</h1><br>
+                <ul id="end_section">
+                    <a href="taxi booking.html">
+                        <li>Home</li>
+                    </a>
+                    <a href="#about">
+                        <li>About</li>
+                    </a>
+                    <a href="#about">
+                        <li>Product</li>
+                    </a>
+                    <a href="#contact">
+                        <li>contact_us</li>
+                    </a>
+                </ul>
+            </div>
+            <div class="end3">
+                <h1 id="end_section" class="ending">Follow_us</h1><br>
+                <a href="facebook.com" target="new">Facebook</a>
+                <a href="twitter.com" target="new">Twitter</a>
+                <a href="instagram.com" target="new">instagram</a>
+                <a href="linkedin.com" target="new">Linked-in</a>
+                <a href="youtube.com" target="new">Youtube</a>
+            </div>
+            <div class="end4">
+                <input type="text" placeholder="Mail id" class="end_text" id="endtext"><br><br>
+                <input type="button" class="end_button" onclick="subscribe()" value="Suscribe" id="btn1">
+                <input type="button" class="end_button" value="Unsuscribe" id="btn2">
+            </div>
+        </div><br><br><br><br>
+    </div><br>
+    <center>2019 All Rights Reserved SportingGoodStore</center><br>
+</body>
+
+</html>

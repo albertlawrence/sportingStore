@@ -1,0 +1,114 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+    <title>Register</title>
+    <style>
+        .msg{
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Your other HTML content here -->
+    <fieldset id="Register_body"><br><br>
+        <center><h1 style="color: white;">LOGIN</h1></center><br><br>
+        <form action="" method="POST" id="registration-form" onsubmit="return register_submit()">
+            {% csrf_token %}
+            <input type="text" id="Name" placeholder="Enter Username" name="username" onkeyup="user_name()" required><br>
+            <p id="msg1" class="msg"></p><br>
+        
+            <!-- Number validation -->
+            <input type="text" id="Number" placeholder="Enter Number" name="usernumber" onkeyup="number()" required><br>
+            <p id="msg_number" class="msg"></p><br>
+        
+            <!-- Email validation -->
+            <input type="email" id="Email" placeholder="Enter Email" name="useremail" onkeyup="email()" required><br>
+            <p id="msg_email" class="msg"></p><br>
+        
+            <!-- Password validation -->
+            <input type="password" id="Password" placeholder="Enter Password" name="password" onkeyup="user_password()" required><br>
+            <p id="msg_password" class="msg"></p><br>
+            
+        
+            <!-- Confirm Password validation -->
+            <input type="password" id="Confirm_Password" placeholder="Confirm Password" name="confirm_password" onkeyup="compassword()" required><br>
+            <p id="msg_confirm_password" class="msg"></p><br>
+        
+            <input type="submit" value="Register" id="submit" onclick="return submitbtn()"><br><br>
+            <p id="msg_end" class="msg"></p><br><br>
+            <a href="{% url 'login' %}">Already have an account?</a><br><br><br>
+            <p id="msg_value" style="font-size: 15px; color: rgb(226, 0, 0); text-align: center;"></p>
+        </form>
+        </fieldset>
+        
+        <script>
+        function submitbtn() {
+            var name = document.getElementById("Name").value;
+            var number = document.getElementById("Number").value;
+            var email = document.getElementById("Email").value;
+            var password = document.getElementById("Password").value;
+            var confirmPassword = document.getElementById("Confirm_Password").value;
+          
+            if (name === "" || number === "" || email === "" || password === "" || confirmPassword === "") {
+                document.getElementById("msg_end").innerHTML = "Fill in all fields";
+                return false; // Prevent form submission if fields are empty
+            }
+            return true; // Allow form submission if all fields are filled
+        }
+        
+        function number() {
+            var number = document.getElementById("Number").value;
+            var numberRegex = /^\d+$/;
+            if (!numberRegex.test(number)) {
+                document.getElementById("msg_number").innerHTML = "Invalid number";
+            } else if (number.length !== 10 || !['7', '8', '9'].includes(number.charAt(0))) {
+                document.getElementById("msg_number").innerHTML = "Use a correct 10-digit number starting with 7, 8, or 9";
+            } else {
+                document.getElementById("msg_number").innerHTML = "";
+            }
+        }
+        
+        function email() {
+            var email = document.getElementById("Email").value;
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById("msg_email").innerHTML = "Invalid email format";
+            } else {
+                document.getElementById("msg_email").innerHTML = "";
+            }
+        }
+        
+        function user_password() {
+            var password = document.getElementById("Password").value;
+            var pwdExpression = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
+            if (!pwdExpression.test(password)) {
+                document.getElementById("msg_password").innerHTML = "Include at least one uppercase letter, one lowercase letter, one numeric digit, and one special character";
+            } else {
+                document.getElementById("msg_password").innerHTML = "";
+            }
+        }
+        
+        function compassword() {
+            var password = document.getElementById("Password").value;
+            var confirmPassword = document.getElementById("Confirm_Password").value;
+            if (password !== confirmPassword) {
+                document.getElementById("msg_confirm_password").innerHTML = "Password confirmation does not match";
+            } else {
+                document.getElementById("msg_confirm_password").innerHTML = "";
+            }
+        }
+        
+        function register_submit() {
+            // You can add additional validation logic here if needed.
+            // Returning true allows the form submission; returning false prevents it.
+            return true;
+        }
+        </script>
+        
+</body>
+</html>
