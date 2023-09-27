@@ -32,7 +32,10 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -41,8 +44,26 @@ INSTALLED_APPS = [
     'minisport',
 ]
 
+# SOCIALACCOUNT_PROVIDERS = {
+#     'google': {
+#         'SCOPE': ['profile', 'email'],
+#         'APP': {
+#             'client_id': 'YOUR_GOOGLE_CLIENT_ID',
+#             'secret': 'YOUR_GOOGLE_CLIENT_SECRET',
+#             'key': '',
+#         }
+#     }
+# }
+LOGIN_URL = '/'
+LOGOUT_URL = 'account_logout'
+LOGIN_REDIRECT_URL = 'index'
+AUTHENTICATION_BACKENDS = (
+    # ...
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'allauth.account.middleware.AccountMiddleware',  # Add this line
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -127,6 +148,17 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+RAZOR_KEY_ID ='rzp_test_Luqp1o1aVb54BU'
+
+RAZOR_KEY_SECRET ='vhsuBvAVdDuVRwP97rbj8srl'
 
 
+
+
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

@@ -1,0 +1,190 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/upload_product.css' %}">
+    <title>Upload Product</title>
+</head>
+<body>
+    <div class="product_details">
+        <h1>Upload Product</h1>
+        <form method="post" action="{% url 'upload_product' %}" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+           <!-- Inside your HTML form -->
+<label for="category">Select Category:</label>
+<select id="category" onchange="updateProductDetails()" required name="category">
+    <option value="">Select a category</option>
+    <option value="cricket">Cricket</option>
+    <option value="football">Football</option>
+    <option value="tennis">Tennis</option>
+</select>
+
+<div id="product_dropdown" style="display: none;">
+    <label for="product_name">Select Product:</label>
+    <select id="product_name" required name="name">
+        <!-- Product options will be dynamically populated based on the selected category -->
+    </select>
+</div>
+
+<div id="size_dropdown" style="display: none;">
+    <label for="size">Select Size:</label>
+    <select id="size" name="size">
+        <option value="small">Small</option>
+        <option value="medium">Medium</option>
+        <option value="large">Large</option>
+    </select>
+</div>
+
+<label for="price">Price:</label>
+<input type="number" id="price" placeholder="Enter price" min="0" required name="price">
+
+<label for="image">Image (PNG, JPG, or GIF):</label>
+<input type="file" id="image" accept="image/png, image/jpeg, image/gif" required name="image"><br><br>
+
+<!-- Product Count Field -->
+<label for="product_count">Product Count:</label>
+<input type="number" id="product_count" min="0" required name="product_count">
+
+<button type="submit" id="btn_upload">Upload</button>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+   function updateProductDetails() {
+    var categoryDropdown = document.getElementById("category");
+    var productDropdown = document.getElementById("product_name");
+    var sizeDropdown = document.getElementById("size_dropdown");
+    var productCountField = document.getElementById("product_count").value; // Get the value of the product count input
+
+    // Reset product and size dropdowns
+    productDropdown.innerHTML = "";
+    sizeDropdown.style.display = "none";
+
+    if (categoryDropdown.value === "cricket") {
+        // Add cricket products
+        addProductOption("Cricket Bat", "cricket_bat");
+        addProductOption("Cricket Ball", "cricket_ball");
+        addProductOption("Cricket Shoe", "cricket_shoe");
+        addProductOption("Cricket Jersey", "cricket_jersey");
+    } else if (categoryDropdown.value === "football") {
+        // Add football products
+        addProductOption("Football", "football");
+        addProductOption("Football Boot", "football_boot");
+        addProductOption("Football Jersey", "football_jersey");
+    } else if (categoryDropdown.value === "tennis") {
+        // Add tennis products
+        addProductOption("Tennis Racket", "tennis_racket");
+        addProductOption("Tennis Ball", "tennis_ball");
+    }
+
+    // Display the product dropdown
+    document.getElementById("product_dropdown").style.display = "block";
+}
+
+// Rest of your JavaScript code...
+
+document.getElementById("product_name").addEventListener("change", function () {
+    var selectedProduct = this.value;
+    var sizeDropdown = document.getElementById("size_dropdown");
+
+    // Display the size dropdown for specific products
+    if (
+        selectedProduct === "cricket_shoe" ||
+        selectedProduct === "cricket_jersey" ||
+        selectedProduct === "football_boot" ||
+        selectedProduct === "football_jersey"
+    ) {
+        sizeDropdown.style.display = "block";
+    } else {
+        sizeDropdown.style.display = "none";
+    }
+});
+
+</script>
+<script>
+    function updateProductDetails() {
+        var categoryDropdown = document.getElementById("category");
+        var productDropdown = document.getElementById("product_name");
+        var sizeDropdown = document.getElementById("size_dropdown");
+        var productCountField = document.getElementById("product_count");
+
+        // Reset product and size dropdowns
+        productDropdown.innerHTML = "";
+        sizeDropdown.style.display = "none";
+
+        if (categoryDropdown.value === "cricket") {
+            // Add cricket products
+            addProductOption("Cricket Bat", "cricket_bat");
+            addProductOption("Cricket Ball", "cricket_ball");
+            addProductOption("Cricket Shoe", "cricket_shoe");
+            addProductOption("Cricket Jersey", "cricket_jersey");
+            // Set the product count for cricket
+            productCountField.value = ""; // Clear the product count input
+        } else if (categoryDropdown.value === "football") {
+            // Add football products
+            addProductOption("Football", "football");
+            addProductOption("Football Boot", "football_boot");
+            addProductOption("Football Jersey", "football_jersey");
+            // Set the product count for football
+            productCountField.value = ""; // Clear the product count input
+        } else if (categoryDropdown.value === "tennis") {
+            // Add tennis products
+            addProductOption("Tennis Racket", "tennis_racket");
+            addProductOption("Tennis Ball", "tennis_ball");
+            // Set the product count for tennis
+            productCountField.value = ""; // Clear the product count input
+        }
+
+        // Display the product dropdown
+        document.getElementById("product_dropdown").style.display = "block";
+    }
+
+    function addProductOption(productName, productValue) {
+        var productOption = document.createElement("option");
+        productOption.value = productValue;
+        productOption.textContent = productName;
+        document.getElementById("product_name").appendChild(productOption);
+    }
+
+    document.getElementById("product_name").addEventListener("change", function() {
+        var selectedProduct = this.value;
+        var sizeDropdown = document.getElementById("size_dropdown");
+
+        // Display the size dropdown for specific products
+        if (selectedProduct === "cricket_shoe" || selectedProduct === "cricket_jersey" ||
+            selectedProduct === "football_boot" || selectedProduct === "football_jersey") {
+            sizeDropdown.style.display = "block";
+        } else {
+            sizeDropdown.style.display = "none";
+        }
+    });
+</script>
+<script>
+    function validateForm() {
+        var imageInput = document.getElementById("image");
+        var allowedFormats = ["image/jpeg", "image/png", "image/gif"];
+
+        if (imageInput.files.length > 0) {
+            var selectedFile = imageInput.files[0];
+            if (allowedFormats.indexOf(selectedFile.type) === -1) {
+                alert("Upload only image formats (JPEG, PNG, GIF).");
+                imageInput.value = ""; // Clear the file input
+                return false; // Prevent form submission
+            }
+        }
+        var productCountField = document.getElementById("product_count");
+        var productCount = parseInt(productCountField.value);
+
+        if (isNaN(productCount) || productCount <= 0) {
+            alert("Product Count must be a positive integer.");
+            return false; 
+        }
+
+        return true; 
+    }
+
+    document.querySelector("form").addEventListener("submit", validateForm);
+</script>

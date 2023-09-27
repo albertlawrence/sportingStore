@@ -1,0 +1,104 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/admin_products.css' %}">
+        <style>
+            /* Add custom styles here */
+            body {
+                font-family: Arial, sans-serif;
+                padding: 20px;
+            }
+    
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+    
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+    
+            th {
+                background-color: #f2f2f2;
+            }
+    
+            img {
+                max-width: 100px;
+                max-height: 100px;
+            }
+    
+            .approve-button, .reject-button {
+                padding: 6px 12px;
+                font-size: 14px;
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+                margin-right: 6px;
+            }
+    
+            .approve-button {
+                background-color: #5cb85c;
+                color: #fff;
+            }
+    
+            .reject-button {
+                background-color: #d9534f;
+                color: #fff;
+            }
+            a{
+                margin-left: 1400px;
+            }
+        </style>
+    </head>
+    
+<body>
+    <h1>Admin Products</h1>
+    <a href="{% url 'logout' %}?next=/">Logout</a><br><br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Approval</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.size }}</td>
+                <td>{{ product.price }}</td>
+                <td><img src="{{ product.image.url }}" alt="Product Image"></td>
+                <td>
+                    <form method="post" action="{% url 'adminapproval' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product_id" value="{{ product.id }}">
+                        <button type="submit" class="approve-button">
+                            {% if product.approved %}
+                                Unapprove
+                            {% else %}
+                                Approve
+                            {% endif %}
+                        </button>
+                    </form>
+                    
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

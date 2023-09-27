@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+</head>
+<body>
+    
+    <div class="payment-container">
+        <h1>Payment Amount: ${{ amount }}</h1>
+        <button class="pay-button" id="pay-btn">Pay Now</button>
+    </div>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var options = {
+            key: "{{ razorpay_merchant_key }}",
+            amount: "{{ amount }}", // Use the price from the template
+            currency: "{{ currency }}",
+            name: "Dj Razorpay",
+            order_id: "{{ razorpay_order_id }}",
+            callback_url: "{{ callback_url }}",
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById("pay-btn").onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>

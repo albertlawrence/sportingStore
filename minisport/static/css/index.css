@@ -107,14 +107,21 @@ a {
 .taxi {
     display: flex;
     justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 #taxi1 {
-    padding-left: 100px;
-}
+    /* padding-left: 100px; */
+    display: grid;
+   grid-template-columns: repeat(6, 1fr);
+   grid-gap: 10px;
+  
+} 
 
 #taxi3 {
     padding-right: 100px;
+
 }
 
 #taxi {

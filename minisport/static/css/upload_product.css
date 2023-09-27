@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-image:url("../images/backgroundimg.jpg") ;       
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.product_details {
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+    margin-top: 50px;
+
+}
+
+h1 {
+    text-align: center;
+    color: rgb(221, 107, 107);
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+select, input {
+    width: 80%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-left: 20px;
+}
+
+select:focus, input:focus {
+    border: 2px solid #007BFF;
+}
+
+#size_dropdown {
+    display: none;
+}
+#btn_upload{
+    width: 200px;
+    height: 30px;
+    margin-left: 135px;
+    margin-bottom: 40px;
+    font-size: 15px;
+    background-color: rgb(108, 224, 108);
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
