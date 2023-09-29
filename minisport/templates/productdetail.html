@@ -308,16 +308,18 @@ html, body {
           <div class="product-price">
             <span>{{ product.price }}</span>
             {% if user.is_authenticated %}
-                {% if user != product.user %}
+                {% if not user.profile.is_custom %} 
                     <a href="{% url 'paymentform' %}?amount=1000" class="cart-btn customBtn">Buy Now</a>
                 {% endif %}
             {% else %}
                 <a href="{% url 'login' %}" class="cart-btn">Buy</a>
             {% endif %}
             <br><br>
-            <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">Add to cart</a>
-
+            {% if not user.profile.is_custom %}
+                <a href="{% url 'add_to_cart' product.id %}" class="cart-btn">Add to cart</a>
+            {% endif %}
         </div>
+        
         
         
         

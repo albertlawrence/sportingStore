@@ -44,16 +44,22 @@ body{
                 {% if user.is_authenticated %}
                     <a href="" style="color: red;">Welcome, {{ user.username }}</a>&emsp;
                     <a href="#main">HOME</a>&emsp;
-                    <a href="{%url 'upload_product'%}">ADD PRODUCT</a>&emsp;
+                    {% if user.profile.is_custom %}
+                    {% else %}
+                        <a href="{% url 'upload_product' %}">ADD PRODUCT</a>&emsp;
+                    {% endif %}
                     <a href="#about">ABOUT</a>&emsp;
-                    <a href="#taxi"> PRODUCT</a>&emsp;
-                    <a href="#about">CART</a>&emsp;
+                    <a href="#taxi">PRODUCT</a>&emsp;
+                    <a href="{% url 'cart' %}">CART</a>&emsp;
                     <a href="{% url 'logout' %}?next=/">Logout</a>&emsp;&emsp;&emsp;
                 {% else %}
-                <a href="{% url 'register' %}">Signup</a>&emsp;&emsp;&emsp;
+                    <a href="{% url 'customsignup' %}">Signup</a>&emsp;&emsp;&emsp;
                     <a href="{% url 'login' %}">Login</a>
                 {% endif %}
             </div>
+            
+            
+            
             
         </div><br><br><br>
     </div><br><br>
@@ -120,6 +126,8 @@ body{
                     <a href="#contact">
                         <li>contact_us</li>
                     </a>
+                    <h3>want to sell product</h3>
+                    <a href="{% url 'register' %}">Signup</a>&emsp;&emsp;&emsp;
                 </ul>
             </div>
             <div class="end3">

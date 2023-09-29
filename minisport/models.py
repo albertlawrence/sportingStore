@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     number = models.CharField(max_length=20, unique=True)
+    is_custom = models.BooleanField(default=False) 
+    is_seller = models.BooleanField(default=False) 
 
     def __str__(self):
         return self.user.username
@@ -11,7 +13,7 @@ class UserProfile(models.Model):
 class Cart(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     products = models.ManyToManyField('Product', through='CartItem')
-
+    
     def __str__(self):
         return f"Cart for {self.user.username}"
 
@@ -28,7 +30,7 @@ class Product(models.Model):
         ('cricket', 'Cricket'),
         ('football', 'Football'),
         ('tennis', 'Tennis'),
-        # Add more category choices as needed
+        ('others', 'Others')
     ]
 
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='cricket')
@@ -37,6 +39,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     image = models.ImageField(upload_to='product_images/', blank=True)
     approved = models.BooleanField(default=False)
+ 
 
     description = models.TextField(null=True, blank=True)
     date_added = models.DateField(auto_now_add=True)
@@ -51,8 +54,7 @@ class Product(models.Model):
             'cricket': ['Cricket Ball', 'Cricket Bat', 'Cricket Jersey', 'Cricket Shoes'],
             'football': ['Football', 'Jersey', 'Boot'],
             'tennis': ['Tennis Ball', 'Tennis Bat', 'Tennis Shoes'],
-            # Add more categories and products as needed
+            'others': ['Others'],
         }
 
-        # Return available products based on the category of the product
         return product_options.get(self.category, [])

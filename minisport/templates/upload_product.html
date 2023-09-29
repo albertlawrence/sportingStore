@@ -19,12 +19,23 @@
     <option value="cricket">Cricket</option>
     <option value="football">Football</option>
     <option value="tennis">Tennis</option>
+    <option value="others">Others</option>
 </select>
+
+<!-- Input field for entering a new category (displayed when "Others" is selected) -->
+<div id="new_category_input" style="display: none;">
+    <label for="new_category">Enter New Category:</label>
+    <input type="text" id="new_category" name="new_category">
+</div>
+<div id="new_product_name_input" style="display: none;">
+    <label for="new_product_name">Enter New Product Name:</label>
+    <input type="text" id="new_product_name" name="new_product_name">
+</div>
+
 
 <div id="product_dropdown" style="display: none;">
     <label for="product_name">Select Product:</label>
     <select id="product_name" required name="name">
-        <!-- Product options will be dynamically populated based on the selected category -->
     </select>
 </div>
 
@@ -53,63 +64,13 @@
 </body>
 </html>
 <script>
-   function updateProductDetails() {
-    var categoryDropdown = document.getElementById("category");
-    var productDropdown = document.getElementById("product_name");
-    var sizeDropdown = document.getElementById("size_dropdown");
-    var productCountField = document.getElementById("product_count").value; // Get the value of the product count input
-
-    // Reset product and size dropdowns
-    productDropdown.innerHTML = "";
-    sizeDropdown.style.display = "none";
-
-    if (categoryDropdown.value === "cricket") {
-        // Add cricket products
-        addProductOption("Cricket Bat", "cricket_bat");
-        addProductOption("Cricket Ball", "cricket_ball");
-        addProductOption("Cricket Shoe", "cricket_shoe");
-        addProductOption("Cricket Jersey", "cricket_jersey");
-    } else if (categoryDropdown.value === "football") {
-        // Add football products
-        addProductOption("Football", "football");
-        addProductOption("Football Boot", "football_boot");
-        addProductOption("Football Jersey", "football_jersey");
-    } else if (categoryDropdown.value === "tennis") {
-        // Add tennis products
-        addProductOption("Tennis Racket", "tennis_racket");
-        addProductOption("Tennis Ball", "tennis_ball");
-    }
-
-    // Display the product dropdown
-    document.getElementById("product_dropdown").style.display = "block";
-}
-
-// Rest of your JavaScript code...
-
-document.getElementById("product_name").addEventListener("change", function () {
-    var selectedProduct = this.value;
-    var sizeDropdown = document.getElementById("size_dropdown");
-
-    // Display the size dropdown for specific products
-    if (
-        selectedProduct === "cricket_shoe" ||
-        selectedProduct === "cricket_jersey" ||
-        selectedProduct === "football_boot" ||
-        selectedProduct === "football_jersey"
-    ) {
-        sizeDropdown.style.display = "block";
-    } else {
-        sizeDropdown.style.display = "none";
-    }
-});
-
-</script>
-<script>
     function updateProductDetails() {
         var categoryDropdown = document.getElementById("category");
         var productDropdown = document.getElementById("product_name");
         var sizeDropdown = document.getElementById("size_dropdown");
         var productCountField = document.getElementById("product_count");
+        var newCategoryInput = document.getElementById("new_category_input");
+        var newProductNameInput = document.getElementById("new_product_name_input");
 
         // Reset product and size dropdowns
         productDropdown.innerHTML = "";
@@ -123,6 +84,9 @@ document.getElementById("product_name").addEventListener("change", function () {
             addProductOption("Cricket Jersey", "cricket_jersey");
             // Set the product count for cricket
             productCountField.value = ""; // Clear the product count input
+            // Hide the new category and new product name input fields
+            newCategoryInput.style.display = "none";
+            newProductNameInput.style.display = "none";
         } else if (categoryDropdown.value === "football") {
             // Add football products
             addProductOption("Football", "football");
@@ -130,11 +94,26 @@ document.getElementById("product_name").addEventListener("change", function () {
             addProductOption("Football Jersey", "football_jersey");
             // Set the product count for football
             productCountField.value = ""; // Clear the product count input
+            // Hide the new category and new product name input fields
+            newCategoryInput.style.display = "none";
+            newProductNameInput.style.display = "none";
         } else if (categoryDropdown.value === "tennis") {
             // Add tennis products
             addProductOption("Tennis Racket", "tennis_racket");
             addProductOption("Tennis Ball", "tennis_ball");
             // Set the product count for tennis
+            productCountField.value = ""; // Clear the product count input
+            // Hide the new category and new product name input fields
+            newCategoryInput.style.display = "none";
+            newProductNameInput.style.display = "none";
+        } else if (categoryDropdown.value === "others") {
+            // Show the new category input field when "Others" is selected
+            newCategoryInput.style.display = "block";
+            // Show the new product name input field when "Others" is selected
+            newProductNameInput.style.display = "block";
+            // Add "Others" as an option to the product dropdown
+            addProductOption("Others", "others");
+            // Set the product count for others (if needed)
             productCountField.value = ""; // Clear the product count input
         }
 
@@ -149,20 +128,8 @@ document.getElementById("product_name").addEventListener("change", function () {
         document.getElementById("product_name").appendChild(productOption);
     }
 
-    document.getElementById("product_name").addEventListener("change", function() {
-        var selectedProduct = this.value;
-        var sizeDropdown = document.getElementById("size_dropdown");
+    // Rest of your JavaScript code...
 
-        // Display the size dropdown for specific products
-        if (selectedProduct === "cricket_shoe" || selectedProduct === "cricket_jersey" ||
-            selectedProduct === "football_boot" || selectedProduct === "football_jersey") {
-            sizeDropdown.style.display = "block";
-        } else {
-            sizeDropdown.style.display = "none";
-        }
-    });
-</script>
-<script>
     function validateForm() {
         var imageInput = document.getElementById("image");
         var allowedFormats = ["image/jpeg", "image/png", "image/gif"];

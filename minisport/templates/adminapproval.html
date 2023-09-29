@@ -81,7 +81,14 @@
                 <td>{{ product.name }}</td>
                 <td>{{ product.size }}</td>
                 <td>{{ product.price }}</td>
-                <td><img src="{{ product.image.url }}" alt="Product Image"></td>
+                <td>
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="Product Image">
+                    {% else %}
+                        No Image Available
+                    {% endif %}
+                </td>
+                
                 <td>
                     <form method="post" action="{% url 'adminapproval' %}">
                         {% csrf_token %}

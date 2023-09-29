@@ -20,14 +20,14 @@ def register(request):
             # Create a new user
             user = User.objects.create_user(username=username, email=email, password=password)
 
-            # Create a UserProfile associated with the user
-            user_profile = UserProfile(user=user, number=number)
+            # Create a UserProfile associated with the user as a seller
+            user_profile = UserProfile(user=user, number=number, is_custom=False, is_seller=True)
             user_profile.save()
 
             # Log in the user
             lg(request, user)
 
-            return redirect('login')  # Redirect to the login page after successful registration
+            return redirect('login')  
 
         except IntegrityError as e:
             # Handle the IntegrityError (e.g., duplicate number)
@@ -35,6 +35,41 @@ def register(request):
             return render(request, "register.html", {"error_message": error_message})
 
     return render(request, "register.html")
+
+
+
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
+from django.contrib.auth import get_user_model
+from django.db import IntegrityError 
+
+from .models import UserProfile 
+
+def customsignup(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('useremail')
+        password = request.POST.get('password')
+        number = request.POST.get('usernumber')
+        try:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user_profile = UserProfile(user=user, number=number, is_custom=True, is_seller=False)
+            user_profile.save()
+
+            # Log in the user
+            lg(request, user)
+
+            return redirect('login')  
+
+        except IntegrityError as e:
+            error_message = "Registration failed. This number is already registered."
+            return render(request, "customsignup.html", {"error_message": error_message})
+
+    return render(request, "customsignup.html")
+
+
+
+
 
 
 
@@ -71,10 +106,12 @@ from django.shortcuts import redirect
 
 def user_logout(request):
     logout(request)
-    return redirect('login') 
+    return redirect('index') 
 
 
 from django.core.exceptions import ValidationError
+from django.shortcuts import render, redirect
+from .models import Product
 
 def upload_product(request):
     if request.method == 'POST':
@@ -91,6 +128,20 @@ def upload_product(request):
             return render(request, 'upload_product.html', {'error_message': 'Only image files (jpg, jpeg, png, gif) are allowed.'})
 
         try:
+            if category == 'others':
+                # If the category is "others," get the values of the new_category and new_product_name fields
+                new_category = request.POST.get('new_category')
+                new_product_name = request.POST.get('new_product_name')
+
+                # Check if the new category already exists in the database
+                if not Product.objects.filter(category=new_category).exists():
+                    # Create a new category entry if it doesn't exist
+                    Product.objects.create(category=new_category)
+
+                # Set the category and name to the new category and new product name values
+                category = new_category
+                name = new_product_name
+
             product = Product.objects.create(
                 category=category,
                 name=name,
@@ -111,11 +162,6 @@ def upload_product(request):
 
 
 
-# def show_products(request):
-#     products = Product.objects.all()
-#     return render(request, 'show_products.html', {'products': products})
-
-
 from django.shortcuts import render, redirect
 from .models import Product
 
@@ -131,6 +177,10 @@ def adminapproval(request):
 
     products = Product.objects.all()
     return render(request, 'adminapproval.html', {'products': products})
+
+
+
+
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product
@@ -220,25 +270,24 @@ from django.shortcuts import render, redirect
 from .models import Product, Cart, CartItem
 
 def add_to_cart(request, product_id):
-    # Get the product based on the product_id
-    product = Product.objects.get(pk=product_id)
-
-    # Get or create the user's cart
+    user_cart = None 
+    
     if request.user.is_authenticated:
         user_cart, created = Cart.objects.get_or_create(user=request.user)
-    else:
-        # Handle for anonymous users if needed
-        pass
-
-    # Check if the product is already in the cart
-    cart_item, created = CartItem.objects.get_or_create(cart=user_cart, product=product)
     
-    if not created:
-        # If the product is already in the cart, increase the quantity
-        cart_item.quantity += 1
-        cart_item.save()
-
+    product = Product.objects.get(pk=product_id)
+    
+    if user_cart is not None:
+        cart_item, created = CartItem.objects.get_or_create(cart=user_cart, product=product)
+    
+        if not created:
+            cart_item.quantity += 1
+            cart_item.save()
+    
     return redirect('cart')
+
+
+
 
 def view_cart(request):
     if request.user.is_authenticated:

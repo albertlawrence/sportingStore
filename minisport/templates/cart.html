@@ -4,19 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .cart-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .cart-btn {
+            display: block;
+            text-align: center;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .cart-btn:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Shopping Cart</h1>
-    
-    {% if cart_items %}
-    <ul>
-        {% for item in cart_items %}
-        <li>{{ item.product.name }} - Quantity: {{ item.quantity }}</li>
-        {% endfor %}
-    </ul>
-    <a href="{% url 'paymentform' %}" class="cart-btn">Proceed to Checkout</a>
-    {% else %}
-    <p>Your cart is empty.</p>
-    {% endif %}
+    <div class="cart-container">
+        <h1>Shopping Cart</h1>
+        
+        {% if cart_items %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product Image</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart_items %}
+                <tr>
+                    
+                    <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
+                    <td>{{ item.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'paymentform' %}" class="cart-btn">Proceed to Checkout</a>
+        {% else %}
+        <p>Your cart is empty.</p>
+        {% endif %}
+    </div>
 </body>
 </html>
