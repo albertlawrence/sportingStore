@@ -6,6 +6,8 @@ class UserProfile(models.Model):
     number = models.CharField(max_length=20, unique=True)
     is_custom = models.BooleanField(default=False) 
     is_seller = models.BooleanField(default=False) 
+    is_approved = models.BooleanField(default=False) 
+    pdf_file_path = models.FileField(upload_to='pdfs/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username

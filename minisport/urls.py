@@ -4,12 +4,13 @@ from django.conf.urls.static import static
 from . import views
 
 
+
 urlpatterns = [
     path('register', views.register, name="register"),
     path('customsignup', views.customsignup, name="customsignup"),
     path('login', views.login, name="login"),
     path('forgot_password', views.forgot_password, name="forgot_password"),
-    path('', views.index, name="index"),
+    path('', views.index, name='index'),
     path('logout/', views.user_logout, name='logout'),
     path('upload_product/', views.upload_product, name='upload_product'),
      path('adminapproval/', views.adminapproval, name='adminapproval'),
@@ -17,6 +18,10 @@ urlpatterns = [
     path('paymentform/', views.paymentform, name='paymentform'),
     path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
     path('productdetail/<int:pk>/', views.productdetail, name='productdetail'),
+    
+
+    path('admin/approval/seller/<int:user_id>', views.seller_approval, name='seller_approval'),
+    path('admin/approval/seller/<int:user_id>', views.seller_delete, name='seller_delete'),
 
 
 

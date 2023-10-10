@@ -44,7 +44,7 @@ body{
                 {% if user.is_authenticated %}
                     <a href="" style="color: red;">Welcome, {{ user.username }}</a>&emsp;
                     <a href="#main">HOME</a>&emsp;
-                    {% if user.profile.is_custom %}
+                    {% if not isSeller %}
                     {% else %}
                         <a href="{% url 'upload_product' %}">ADD PRODUCT</a>&emsp;
                     {% endif %}

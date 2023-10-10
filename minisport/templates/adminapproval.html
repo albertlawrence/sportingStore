@@ -59,12 +59,90 @@
             a{
                 margin-left: 1400px;
             }
+
+            /* styles.css */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
         </style>
     </head>
     
 <body>
-    <h1>Admin Products</h1>
+    <h1>Admin Sellers</h1>
     <a href="{% url 'logout' %}?next=/">Logout</a><br><br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>PDF Uploaded</th>
+                <th>Approval Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for data in seller_data %}
+                <tr>
+                    <td>{{ data.seller.user.username }}</td>
+                    <td>{{ data.seller.number }}</td>
+                    <td>{{ data.seller.user.email }}</td>
+                    <td>
+                        {% if data.pdf_info.pdf_uploaded %}
+                            <a href="{{ data.pdf_info.pdf_url }}">View PDF</a>
+                        {% else %}
+                            No PDF uploaded
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if data.is_approved %}
+                            Approved
+                        {% else %}
+                            Not Approved
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if not data.is_approved %}
+                            <a href="{% url 'seller_approval' data.seller.user.id %}">Approve</a>
+                        {% endif %}
+                        <a href="{% url 'seller_delete' data.seller.user.id %}">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    
+    
+    
+
+    <h1>Admin Products</h1>
     <table>
         <thead>
             <tr>

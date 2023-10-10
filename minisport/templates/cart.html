@@ -60,6 +60,16 @@
         .cart-btn:hover {
             background-color: #555;
         }
+        #add_del_btn
+        {
+            background-color: rgba(106, 26, 26, 0.568);
+            border-radius: 15px;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            width: 25px;
+            color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +83,7 @@
                     <th>Product Image</th>
                     <th>Product Name</th>
                     <th>Quantity</th>
+                    <th>Price</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,7 +92,14 @@
                     
                     <td><img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" width="100"></td>
                     <td>{{ item.product.name }}</td>
-                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <button type="button" class="add-button" onclick="increaseQuantity({{ item.id }})" id="add_del_btn">+</button>
+                        <span id="quantity-{{ item.id }}">{{ item.quantity }}</span>
+                        <button type="button" class="subtract-button" onclick="decreaseQuantity({{ item.id }})" id="add_del_btn">-</button>
+                    </td>
+                    
+                    
+                    <td>{{ item.product.price}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -91,5 +109,50 @@
         <p>Your cart is empty.</p>
         {% endif %}
     </div>
+    <script>
+        function increaseQuantity(itemId) {
+    const quantityElement = document.getElementById(`quantity-${itemId}`);
+    const currentQuantity = parseInt(quantityElement.innerText);
+    const newQuantity = currentQuantity + 1;
+    quantityElement.innerText = newQuantity;
+
+    // Update the server with the new quantity (you'll need to implement this)
+    updateQuantityOnServer(itemId, newQuantity);
+}
+
+function decreaseQuantity(itemId) {
+    const quantityElement = document.getElementById(`quantity-${itemId}`);
+    const currentQuantity = parseInt(quantityElement.innerText);
+
+    // Ensure the quantity doesn't go below 1
+    if (currentQuantity > 1) {
+        const newQuantity = currentQuantity - 1;
+        quantityElement.innerText = newQuantity;
+
+        // Update the server with the new quantity (you'll need to implement this)
+        updateQuantityOnServer(itemId, newQuantity);
+    }
+}
+
+function updateQuantityOnServer(itemId, newQuantity) {
+    // Make an AJAX request to update the quantity on the server
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log('Quantity updated successfully on the server.');
+            } else {
+                console.error('Failed to update quantity on the server.');
+            }
+        }
+    };
+    xhr.open('POST', `/update_quantity/${itemId}/${newQuantity}/`);
+    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+    xhr.send();
+}
+
+        
+    </script>
+    
 </body>
 </html>

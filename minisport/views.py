@@ -9,32 +9,48 @@ from django.contrib.auth import login as lg,authenticate
 from .models import UserProfile 
 from django.db import IntegrityError
 
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.db import IntegrityError
+from django.contrib.auth import login as lg
+from .models import UserProfile
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.db import IntegrityError
+from django.contrib.auth import login as lg
+from django.contrib import messages
+from .models import UserProfile
+
 def register(request):
     if request.method == "POST":
         username = request.POST.get('username')
         email = request.POST.get('useremail')
         password = request.POST.get('password')
         number = request.POST.get('usernumber')
+        pdf_file = request.FILES.get('pdf_file')  # Get the uploaded file
+        
+        # Check if a PDF file was provided and its extension is ".pdf"
+        if pdf_file and pdf_file.name.endswith('.pdf'):
+            try:
+                user = User.objects.create_user(username=username, email=email, password=password, is_active=False)
+                user_profile = UserProfile(user=user, number=number, is_custom=False, is_seller=True, is_approved=False)
+                user_profile.pdf_file_path = pdf_file.name  # Store the file path in the UserProfile
+                user_profile.save()
+                
+                messages.info(request, "Please wait for admin approval.")
+                return redirect('login')
 
-        try:
-            # Create a new user
-            user = User.objects.create_user(username=username, email=email, password=password)
-
-            # Create a UserProfile associated with the user as a seller
-            user_profile = UserProfile(user=user, number=number, is_custom=False, is_seller=True)
-            user_profile.save()
-
-            # Log in the user
-            lg(request, user)
-
-            return redirect('login')  
-
-        except IntegrityError as e:
-            # Handle the IntegrityError (e.g., duplicate number)
-            error_message = "Registration failed. This number is already registered."
+            except IntegrityError as e:
+                error_message = "Registration failed. This number is already registered."
+                return render(request, "register.html", {"error_message": error_message})
+        else:
+            error_message = "Please upload a valid PDF file."
             return render(request, "register.html", {"error_message": error_message})
 
     return render(request, "register.html")
+
+
 
 
 
@@ -42,7 +58,6 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError 
-
 from .models import UserProfile 
 
 def customsignup(request):
@@ -53,7 +68,7 @@ def customsignup(request):
         number = request.POST.get('usernumber')
         try:
             user = User.objects.create_user(username=username, email=email, password=password)
-            user_profile = UserProfile(user=user, number=number, is_custom=True, is_seller=False)
+            user_profile = UserProfile(user=user, number=number, is_custom=True, is_seller=False, is_approved=True)
             user_profile.save()
 
             # Log in the user
@@ -69,9 +84,10 @@ def customsignup(request):
 
 
 
-
-
-
+from django.contrib import messages
+from django.contrib.auth import authenticate, login as lg
+from django.shortcuts import render, redirect
+from .models import UserProfile
 
 def login(request):
     context = {}
@@ -81,24 +97,68 @@ def login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            lg(request, user)
             if user.is_superuser:
-                return redirect('adminapproval')  
+                lg(request, user)
+                return redirect('adminapproval')
             else:
-                return redirect('index') 
+                try:
+                    profile = UserProfile.objects.get(user=user)
+                    is_seller = profile.is_seller
+
+                    if is_seller:
+                        if profile.is_approved:
+                            lg(request, user)
+                            return redirect('index')
+                        else:
+                            context = {'error': 'Your seller account is not yet approved.'}
+                    else:
+                        context = {'error': 'You are not a registered seller.'}
+
+                except UserProfile.DoesNotExist:
+                    context = {'error': 'User profile does not exist.'}
         else:
-            context = {'error': 'Invalid Credentials'}
+            context = {'error': 'Invalid username or password.'}
 
     return render(request, "login.html", context)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def forgot_password(request):
     return render(request,"forgot_password.html")
 
 
+from .models import UserProfile
+
 def index(request):
+    print(f"User ID: {request.user.id}")
+    isSeller = False  # Initialize isSeller to False
+    
+    if request.user.is_authenticated:
+        try:
+            print(f"User ID before query: {request.user.id}")
+            profile = UserProfile.objects.get(user_id=request.user.id)
+            isSeller = profile.is_seller
+        except UserProfile.DoesNotExist:
+            # Handle the case where UserProfile does not exist
+            print("UserProfile does not exist for this user.")
+
+    print(f"isSeller: {isSeller}")
+
     approved_products = Product.objects.filter(approved=True)
-    return render(request, "index.html", {'products': approved_products})
+    return render(request, "index.html", {'products': approved_products, 'isSeller': isSeller})
+
+
 
 
 from django.contrib.auth import logout
@@ -158,27 +218,6 @@ def upload_product(request):
             return render(request, 'upload_product.html', {'error_message': 'Error occurred while saving the product.'})
 
     return render(request, 'upload_product.html')
-
-
-
-
-from django.shortcuts import render, redirect
-from .models import Product
-
-def adminapproval(request):
-    if request.method == 'POST':
-        product_id = request.POST.get('product_id')  # Assuming you have a hidden input for product_id in your form
-        try:
-            product = Product.objects.get(id=product_id)
-            product.approved = not product.approved  # Toggle the 'approved' status
-            product.save()
-        except Product.DoesNotExist:
-            pass  # Handle the case where the product does not exist
-
-    products = Product.objects.all()
-    return render(request, 'adminapproval.html', {'products': products})
-
-
 
 
 
@@ -297,3 +336,71 @@ def view_cart(request):
         cart_items = []
 
     return render(request, 'cart.html', {'cart_items': cart_items})
+
+
+from django.shortcuts import render
+from .models import Product, UserProfile
+
+def adminapproval(request):
+    sellers = UserProfile.objects.filter(is_seller=True, is_approved=False)
+    products = Product.objects.all()
+
+    # Create a list to store seller data with PDF information
+    seller_data = []
+
+    for seller in sellers:
+        # Check if the seller has uploaded a PDF
+        pdf_info = {
+            'pdf_uploaded': False,
+            'pdf_url': None,
+        }
+        if seller.pdf_file_path:
+            pdf_info['pdf_uploaded'] = True
+            pdf_info['pdf_url'] = seller.pdf_file_path.url
+
+        seller_data.append({
+            'seller': seller,
+            'pdf_info': pdf_info,
+            'is_approved': seller.is_approved,  
+        })
+
+    return render(request, 'adminapproval.html', {'seller_data': seller_data, 'products': products})
+
+
+
+
+
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import UserProfile, Product
+
+@login_required
+def seller_approval(request, user_id):
+    # Retrieve the seller profile based on user ID
+    seller_profile = get_object_or_404(UserProfile, user__id=user_id)
+
+    # Check if the seller is not approved yet
+    if not seller_profile.is_approved:
+        # Approve the seller and save the changes
+        seller_profile.is_approved = True
+        seller_profile.save()
+        messages.success(request, 'Seller approved successfully.')
+    else:
+        messages.warning(request, 'Seller is already approved.')
+
+    # Redirect to admin approval page (you can also pass a message if needed)
+    return redirect('adminapproval')
+
+@login_required
+def seller_delete(request, user_id):
+    # Retrieve the seller profile based on user ID
+    seller_profile = get_object_or_404(UserProfile, user__id=user_id)
+
+    # Delete the seller profile
+    seller_profile.delete()
+    messages.success(request, 'Seller deleted successfully.')
+
+    # Redirect to admin approval page (you can also pass a message if needed)
+    return redirect('adminapproval')
+
