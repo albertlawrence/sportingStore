@@ -33,7 +33,7 @@ def register(request):
         # Check if a PDF file was provided and its extension is ".pdf"
         if pdf_file and pdf_file.name.endswith('.pdf'):
             try:
-                user = User.objects.create_user(username=username, email=email, password=password, is_active=False)
+                user = User.objects.create_user(username=username, email=email, password=password)
                 user_profile = UserProfile(user=user, number=number, is_custom=False, is_seller=True, is_approved=False)
                 user_profile.pdf_file_path = pdf_file.name  # Store the file path in the UserProfile
                 user_profile.save()
@@ -94,8 +94,10 @@ def login(request):
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
+        print(username,password)
+        a=User.objects.all()
         user = authenticate(request, username=username, password=password)
-
+        print(user)
         if user is not None:
             if user.is_superuser:
                 lg(request, user)
@@ -112,7 +114,8 @@ def login(request):
                         else:
                             context = {'error': 'Your seller account is not yet approved.'}
                     else:
-                        context = {'error': 'You are not a registered seller.'}
+                        lg(request,user)
+                        return redirect('index')
 
                 except UserProfile.DoesNotExist:
                     context = {'error': 'User profile does not exist.'}
@@ -338,15 +341,59 @@ def view_cart(request):
     return render(request, 'cart.html', {'cart_items': cart_items})
 
 
-from django.shortcuts import render
-from .models import Product, UserProfile
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import UserProfile
 
+@login_required
+def seller_approval(request, user_id):
+    # Retrieve the seller profile based on user ID
+    seller_profile = get_object_or_404(UserProfile, user__id=user_id)
+
+    # Check if the seller is not approved yet
+    if not seller_profile.is_approved:
+        # Approve the seller and save the changes
+        seller_profile.is_approved = True
+        seller_profile.save()
+        messages.success(request, 'Seller approved successfully.')
+    else:
+        messages.warning(request, 'Seller is already approved.')
+
+    # Redirect to admin approval page (you can also pass a message if needed)
+    return redirect('adminapproval')
+
+@login_required
+def seller_delete(request, user_id):
+    seller_profile = get_object_or_404(UserProfile, user__id=user_id)
+
+    # Delete the seller profile
+    seller_profile.delete()
+    messages.success(request, 'Seller deleted successfully.')
+
+    # Redirect to admin approval page (you can also pass a message if needed)
+    return redirect('adminapproval')
+
+
+@login_required
 def adminapproval(request):
     sellers = UserProfile.objects.filter(is_seller=True, is_approved=False)
     products = Product.objects.all()
 
+    if request.method == "POST":
+        product_id = request.POST.get('product_id')
+        product = get_object_or_404(Product, id=product_id)
+        if not product.approved:
+            product.approved = True
+            product.save()
+            messages.success(request, 'Seller approved successfully.')
+        else:
+            messages.warning(request, 'Seller is already approved.')
+
     # Create a list to store seller data with PDF information
+
     seller_data = []
+    
 
     for seller in sellers:
         # Check if the seller has uploaded a PDF
@@ -368,39 +415,4 @@ def adminapproval(request):
 
 
 
-
-
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import UserProfile, Product
-
-@login_required
-def seller_approval(request, user_id):
-    # Retrieve the seller profile based on user ID
-    seller_profile = get_object_or_404(UserProfile, user__id=user_id)
-
-    # Check if the seller is not approved yet
-    if not seller_profile.is_approved:
-        # Approve the seller and save the changes
-        seller_profile.is_approved = True
-        seller_profile.save()
-        messages.success(request, 'Seller approved successfully.')
-    else:
-        messages.warning(request, 'Seller is already approved.')
-
-    # Redirect to admin approval page (you can also pass a message if needed)
-    return redirect('adminapproval')
-
-@login_required
-def seller_delete(request, user_id):
-    # Retrieve the seller profile based on user ID
-    seller_profile = get_object_or_404(UserProfile, user__id=user_id)
-
-    # Delete the seller profile
-    seller_profile.delete()
-    messages.success(request, 'Seller deleted successfully.')
-
-    # Redirect to admin approval page (you can also pass a message if needed)
-    return redirect('adminapproval')
 

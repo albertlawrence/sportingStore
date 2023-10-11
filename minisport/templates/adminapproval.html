@@ -131,7 +131,7 @@ tr:hover {
                         {% if not data.is_approved %}
                             <a href="{% url 'seller_approval' data.seller.user.id %}">Approve</a>
                         {% endif %}
-                        <a href="{% url 'seller_delete' data.seller.user.id %}">Delete</a>
+                            <a href="{% url 'seller_delete' data.seller.user.id %}">Delete</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -168,9 +168,8 @@ tr:hover {
                 </td>
                 
                 <td>
-                    <form method="post" action="{% url 'adminapproval' %}">
+                    <form method="post" action="{% url 'toggle_approval' product.id %}">
                         {% csrf_token %}
-                        <input type="hidden" name="product_id" value="{{ product.id }}">
                         <button type="submit" class="approve-button">
                             {% if product.approved %}
                                 Unapprove
@@ -179,6 +178,7 @@ tr:hover {
                             {% endif %}
                         </button>
                     </form>
+                    
                     
                 </td>
             </tr>

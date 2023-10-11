@@ -20,10 +20,13 @@ urlpatterns = [
     path('productdetail/<int:pk>/', views.productdetail, name='productdetail'),
     
 
-    path('admin/approval/seller/<int:user_id>', views.seller_approval, name='seller_approval'),
-    path('admin/approval/seller/<int:user_id>', views.seller_delete, name='seller_delete'),
+    # path('seller/<int:user_id>', views.seller_approval, name='seller_approval'),
+    # path('admin/approval/seller/<int:user_id>', views.seller_delete, name='seller_delete'),
 
+     path('seller_approval/<int:user_id>/', views.seller_approval, name='seller_approval'),
 
+    # URL for seller deletion
+    path('seller_delete/<int:user_id>/', views.seller_delete, name='seller_delete'),
 
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.view_cart, name='cart'),

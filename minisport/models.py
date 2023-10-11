@@ -34,7 +34,7 @@ class Product(models.Model):
         ('tennis', 'Tennis'),
         ('others', 'Others')
     ]
-
+    
     category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='cricket')
     name = models.CharField(max_length=255, null=True)
     size = models.CharField(max_length=50, null=True)
